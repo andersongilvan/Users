@@ -1,0 +1,6 @@
+CREATE TABLE contact(
+
+    id BIGSERIAL PRIMARY KEY,
+    phone VARCHAR(100) NOT NULL UNIQUE
+
+);

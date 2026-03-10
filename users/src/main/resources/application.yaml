@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: users
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db_users
+    username: admin
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+  flyway:
+
+    enabled: true
+
+
