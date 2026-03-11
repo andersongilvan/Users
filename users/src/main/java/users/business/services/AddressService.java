@@ -1,10 +1,11 @@
-package users.business;
+package users.business.services;
 
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import users.business.utils.NormalizeUtils;
 import users.infra.entity.Address;
 import users.infra.entity.User;
 import users.infra.exceptions.NotFoundException;
@@ -12,7 +13,6 @@ import users.infra.repository.AddressRepository;
 import users.infra.repository.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

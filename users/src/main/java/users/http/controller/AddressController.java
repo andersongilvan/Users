@@ -1,14 +1,13 @@
-package users.controller;
+package users.http.controller;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import users.business.AddressService;
-import users.controller.dtos.AddressResponseDTO;
-import users.controller.dtos.CreateAddressDTO;
+import users.business.services.AddressService;
+import users.http.dtos.AddressResponseDTO;
+import users.http.dtos.CreateAddressDTO;
 import users.infra.entity.Address;
 import users.infra.mapper.AddressMapper;
 

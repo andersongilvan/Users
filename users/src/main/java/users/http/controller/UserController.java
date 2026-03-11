@@ -1,4 +1,4 @@
-package users.controller;
+package users.http.controller;
 
 
 import lombok.RequiredArgsConstructor;
@@ -7,16 +7,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import users.business.UserService;
-import users.controller.dtos.CreateUserDTO;
-import users.controller.dtos.CreateUserResponseDTO;
-import users.controller.dtos.UserAuthDTO;
-import users.infra.mapper.UserMapper;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+import users.business.services.UserService;
+import users.http.dtos.CreateUserDTO;
+import users.http.dtos.CreateUserResponseDTO;
+import users.http.dtos.UserAuthDTO;
+import users.http.dtos.UserDetailsResponse;
 import users.infra.entity.User;
+import users.infra.mapper.UserMapper;
 import users.infra.security.JwtUtil;
 
 @RestController
@@ -50,6 +49,15 @@ public class UserController {
         String token = jwtUtil.generateToken(authenticate.getName());
 
         return ResponseEntity.ok(token);
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<UserDetailsResponse> showDetails(
+            @AuthenticationPrincipal(expression = "username") String email) {
+
+        User result = userService.findBEmail(email);
+
+        return ResponseEntity.ok(userMapper.toUserDetails(result));
     }
 
 }

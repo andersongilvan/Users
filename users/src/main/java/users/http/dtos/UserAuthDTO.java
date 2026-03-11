@@ -1,4 +1,4 @@
-package users.controller.dtos;
+package users.http.dtos;
 
 public record UserAuthDTO(
         String email,

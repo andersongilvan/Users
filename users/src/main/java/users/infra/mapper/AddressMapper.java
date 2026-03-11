@@ -1,8 +1,8 @@
 package users.infra.mapper;
 
 import org.springframework.stereotype.Component;
-import users.controller.dtos.CreateAddressDTO;
-import users.controller.dtos.AddressResponseDTO;
+import users.http.dtos.CreateAddressDTO;
+import users.http.dtos.AddressResponseDTO;
 import users.infra.entity.Address;
 
 @Component
