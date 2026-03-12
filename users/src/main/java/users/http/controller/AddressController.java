@@ -1,5 +1,6 @@
 package users.http.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import users.business.services.AddressService;
 import users.http.dtos.AddressResponseDTO;
 import users.http.dtos.CreateAddressDTO;
+import users.http.dtos.RequestId;
 import users.infra.entity.Address;
 import users.infra.mapper.AddressMapper;
 
@@ -24,7 +26,7 @@ public class AddressController {
 
     @PostMapping
     public ResponseEntity<AddressResponseDTO> create(
-            @RequestBody CreateAddressDTO dto,
+            @Valid @RequestBody CreateAddressDTO dto,
             @AuthenticationPrincipal(expression = "username") String email) {
 
         Address address = addressMapper.toEntity(dto);
@@ -49,20 +51,21 @@ public class AddressController {
     @PutMapping("/{addressId}")
     public ResponseEntity<AddressResponseDTO> update(
             @AuthenticationPrincipal(expression = "username") String email,
-            @RequestBody CreateAddressDTO dto, @PathVariable Long addressId
+            @Valid @RequestBody CreateAddressDTO dto, @Valid @PathVariable RequestId requestId
     ) {
         Address address = addressMapper.toEntity(dto);
 
-        Address result = addressService.update(address, email, addressId);
+        Address result = addressService.update(address, email, requestId.id());
 
         return ResponseEntity.ok(addressMapper.toAddressResponse(result));
     }
 
     @DeleteMapping("/{addressId}")
     public ResponseEntity<Void> delete(
-            @AuthenticationPrincipal(expression = "username") String email, @PathVariable Long addressId) {
+            @AuthenticationPrincipal(expression = "username") String email,
+            @Valid @PathVariable RequestId requestId) {
 
-        addressService.delete(addressId, email);
+        addressService.delete(requestId.id(), email);
 
         return ResponseEntity.noContent().build();
     }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import users.business.services.ContactService;
 import users.http.dtos.ContactRequest;
 import users.http.dtos.ContactResponse;
+import users.http.dtos.RequestId;
 import users.infra.entity.Contact;
 import users.infra.mapper.ContactMapper;
 
@@ -35,11 +36,11 @@ public class ContactController {
 
     @GetMapping("/{contactId}")
     public ResponseEntity<ContactResponse> show(
-            @Valid @PathVariable Long contactId,
+            @Valid @PathVariable RequestId requestId,
             @AuthenticationPrincipal(expression = "username") String email
     ) {
 
-        var result = contactService.findOne(contactId, email);
+        var result = contactService.findOne(requestId.id(), email);
 
         return ResponseEntity.ok(contactMapper.toContactResponse(result));
 
@@ -47,24 +48,24 @@ public class ContactController {
 
     @PutMapping("/{contactId}")
     public ResponseEntity<ContactResponse> update(
-            @Valid @PathVariable Long contactId,
-            @RequestBody ContactRequest request,
+            @Valid @PathVariable RequestId requestId,
+            @Valid @RequestBody ContactRequest request,
             @AuthenticationPrincipal(expression = "username") String email
     ) {
         var contact = contactMapper.toEntity(request);
 
-        var result = contactService.update(contact, contactId, email);
+        var result = contactService.update(contact, requestId.id(), email);
 
         return ResponseEntity.ok(contactMapper.toContactResponse(result));
     }
 
     @DeleteMapping("/{contactId}")
     public ResponseEntity<Void> delete(
-            @Valid @PathVariable Long contactId,
+            @Valid @PathVariable RequestId requestId,
             @AuthenticationPrincipal(expression = "username") String email
     ) {
 
-        contactService.delete(contactId, email);
+        contactService.delete(requestId.id(), email);
 
         return ResponseEntity.noContent().build();
     }

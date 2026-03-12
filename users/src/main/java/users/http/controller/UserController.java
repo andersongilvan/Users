@@ -1,6 +1,7 @@
 package users.http.controller;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,8 @@ public class UserController {
     private final UserMapper userMapper;
 
     @PostMapping
-    public ResponseEntity<CreateUserResponseDTO> create(@RequestBody CreateUserDTO createUserDTO) {
+    public ResponseEntity<CreateUserResponseDTO> create(
+            @Valid @RequestBody CreateUserDTO createUserDTO) {
 
         User user = userMapper.toEntity(createUserDTO);
 
@@ -41,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserAuthDTO userAuthDTO) {
+    public ResponseEntity<String> login(@Valid @RequestBody UserAuthDTO userAuthDTO) {
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userAuthDTO.email(), userAuthDTO.password())
         );
